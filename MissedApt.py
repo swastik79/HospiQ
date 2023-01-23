@@ -71,6 +71,8 @@ def getMissedQ():
     if missed_qno in c1l or missed_qno in c2l or missed_qno in c3l:
         #enter the code to call the other function here
         deleteMissedQNo(missed_qno)
+        with open("MissedQNo.txt", "a") as f:
+            f.write(str(missed_qno) + "\n")
         return jsonify({"status": "success", "message": "Queue number found"}), 200
     else:
         return jsonify({"status": "error", "message": "Queue number not found"}), 404
