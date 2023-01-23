@@ -1,5 +1,5 @@
 import csv
-
+from flask import Flask, jsonify, request
 class Node:
     def __init__(self, data):
         self.data = data
@@ -17,11 +17,32 @@ class LinkedList:
         while current.next:
             current = current.next
         current.next = new_node
+
+    def delete_node(self, data):
+        current = self.head
+        if current.data[0] == data:
+            self.head = current.next
+            current = None
+            return
+
+        while current is not None:
+            if current.data[0] == data:
+                break
+            prev = current
+            current = current.next
+
+        if current is None:
+            return
+
+        prev.next = current.next
+        current = None
     def printlist(self):
         current = self.head
+        l = []
         while current:
-            print(current.data)
+            l.extend(current.data)
             current = current.next
+        return l
 def read_csv(file_name):
     linked_list = LinkedList()
     with open(file_name, newline='', encoding='utf-8') as csv_file:
@@ -31,33 +52,68 @@ def read_csv(file_name):
     return linked_list
 
 counter1 = read_csv('Counter1.txt')
-counter1.printlist()
+c1l = counter1.printlist()
+#print(counter1.printlist())
 
 counter2 = read_csv('Counter2.txt')
-counter2.printlist()
+c2l = counter2.printlist()
 
 counter3 = read_csv('Counter3.txt')
-counter3.printlist()
+c3l = counter3.printlist()
 
-mq = 1
-mq_dict = {}
 
-if mq in counter1:
-    counter1.remove(mq)
-    mq_dict[mq] = "Counter 1"
-elif mq in counter2:
-    counter2.remove(mq)
-    mq_dict[mq] = "Counter 2"
-elif mq in counter3:
-    counter3.remove(mq)
-    mq_dict[mq] = "Counter 3"
-else:
-    print("This queue number does not exist")
 
-# Open the CSV file for writing
-with open('numbers.csv', 'w', newline='') as csvfile:
-    writer = csv.writer(csvfile)
-    # Write the number to a row in the CSV file
-    writer.writerow([mq_dict])
+app = Flask(__name__)
+@app.route('/missedQueue', methods = ['POST'])
+def getMissedQ():
+    missed_qno = str(request.json['queue_number'])
+    print(missed_qno)
+    if missed_qno in c1l or missed_qno in c2l or missed_qno in c3l:
+        #enter the code to call the other function here
+        deleteMissedQNo(missed_qno)
+        return jsonify({"status": "success", "message": "Queue number found"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Queue number not found"}), 404
 
+def llToFile(ll,file_name):
+    current = ll.head
+    with open(file_name, 'w') as f:
+        while current.next is not None:
+            f.write(str(current.data) + ',')
+            current = current.next
+        f.write(str(current.data))
+    f.close()
+def deleteMissedQNo(mqn):
+    if mqn in c1l:
+        current = counter1.head
+        while current is not None:
+            if current.data[0] == mqn:
+                counter1.delete_node(mqn)
+                break
+            current = current.next
+        print(counter1.printlist())
+        #llToFile(counter1,"Counter1.txt")
+    elif mqn in c2l:
+        current = counter2.head
+        while current is not None:
+            if current.data == mqn:
+                counter2.delete_node(mqn)
+                break
+            current = current.next
+        print(counter2.printlist())
+        #llToFile(counter2, "Counter2.txt")
+    else:
+        current = counter3.head
+        while current is not None:
+            if current.data == mqn:
+                counter1.delete_node(mqn)
+                break
+            current = current.next
+        print(counter3.printlist())
+        #llToFile(counter3,"Counter3.txt")
+
+
+
+if __name__ == '__main__':
+    app.run(host = 'localhost',port = 9001,debug = False)
 
