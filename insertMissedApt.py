@@ -45,3 +45,21 @@ class LinkedList:
             l.extend(current.data)
             current = current.next
         return l
+
+def read_csv(file_name):
+    linked_list = LinkedList()
+    with open(file_name, newline='', encoding='utf-8') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        for row in csv_reader:
+            linked_list.append(row)
+    return linked_list
+
+counter1 = read_csv('Counter1.txt')
+c1l = counter1.printlist()
+
+counter2 = read_csv('Counter2.txt')
+c2l = counter2.printlist()
+
+counter3 = read_csv('Counter3.txt')
+c3l = counter3.printlist()
+print(counter3.printlist())

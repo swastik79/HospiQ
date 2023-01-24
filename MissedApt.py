@@ -99,6 +99,7 @@ def deleteMissedQNo(mqn):
                 break
             current = current.next
         #print(counter1.printlist())
+        c1l.remove(mqn)
         llToFile(counter1,"Counter1.txt")
         missedq_dict[mqn] = 'C1'
         with open("MissedQNo.txt", "a") as f:
@@ -111,6 +112,7 @@ def deleteMissedQNo(mqn):
                 break
             current = current.next
         #print(counter2.printlist())
+        c2l.remove(mqn)
         llToFile(counter2, "Counter2.txt")
         missedq_dict[mqn] = 'C2'
         with open("MissedQNo.txt", "a") as f:
@@ -123,6 +125,7 @@ def deleteMissedQNo(mqn):
                 break
             current = current.next
         #print(counter3.printlist())
+        c3l.remove(mqn)
         llToFile(counter3,"Counter3.txt")
         missedq_dict[mqn] = 'C3'
         with open("MissedQNo.txt", "a") as f:
