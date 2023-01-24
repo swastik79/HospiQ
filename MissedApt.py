@@ -76,6 +76,8 @@ def getMissedQ():
     if missed_qno in c1l or missed_qno in c2l or missed_qno in c3l:
         #enter the code to call the other function here
         deleteMissedQNo(missed_qno)
+        with open("MissedQNo.txt", "a") as f:
+            f.write(str(missed_qno) + "\n")
         return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
     else:
         return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
@@ -83,10 +85,9 @@ def getMissedQ():
 def llToFile(ll,file_name):
     current = ll.head
     with open(file_name, 'w') as f:
-        while current.next is not None:
-            f.write(str(current.data) + ',')
+        while current is not None:
+            f.write(str(current.data[0]) + '\n')
             current = current.next
-        f.write(str(current.data))
     f.close()
 def deleteMissedQNo(mqn):
     if mqn in c1l:
@@ -96,26 +97,26 @@ def deleteMissedQNo(mqn):
                 counter1.delete_node(mqn)
                 break
             current = current.next
-        print(counter1.printlist())
-        #llToFile(counter1,"Counter1.txt")
+        #print(counter1.printlist())
+        llToFile(counter1,"Counter1.txt")
     elif mqn in c2l:
         current = counter2.head
         while current is not None:
-            if current.data == mqn:
+            if current.data[0] == mqn:
                 counter2.delete_node(mqn)
                 break
             current = current.next
-        print(counter2.printlist())
-        #llToFile(counter2, "Counter2.txt")
+        #print(counter2.printlist())
+        llToFile(counter2, "Counter2.txt")
     else:
         current = counter3.head
         while current is not None:
-            if current.data == mqn:
-                counter1.delete_node(mqn)
+            if current.data[0] == mqn:
+                counter3.delete_node(mqn)
                 break
             current = current.next
-        print(counter3.printlist())
-        #llToFile(counter3,"Counter3.txt")
+        #print(counter3.printlist())
+        llToFile(counter3,"Counter3.txt")
 
 
 
