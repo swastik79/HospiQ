@@ -1,5 +1,6 @@
 import csv
 from flask import Flask, jsonify, request
+
 class Node:
     def __init__(self, data):
         self.data = data
@@ -36,6 +37,7 @@ class LinkedList:
 
         prev.next = current.next
         current = None
+
     def printlist(self):
         current = self.head
         l = []
@@ -43,6 +45,7 @@ class LinkedList:
             l.extend(current.data)
             current = current.next
         return l
+
 def read_csv(file_name):
     linked_list = LinkedList()
     with open(file_name, newline='', encoding='utf-8') as csv_file:
@@ -62,7 +65,6 @@ counter3 = read_csv('Counter3.txt')
 c3l = counter3.printlist()
 
 
-
 app = Flask(__name__)
 @app.route('/missedQueue', methods = ['POST'])
 def getMissedQ():
@@ -71,8 +73,6 @@ def getMissedQ():
     if missed_qno in c1l or missed_qno in c2l or missed_qno in c3l:
         #enter the code to call the other function here
         deleteMissedQNo(missed_qno)
-        with open("MissedQNo.txt", "a") as f:
-            f.write(str(missed_qno) + "\n")
         return jsonify({"status": "success", "message": "Queue number found"}), 200
     else:
         return jsonify({"status": "error", "message": "Queue number not found"}), 404
@@ -84,7 +84,9 @@ def llToFile(ll,file_name):
             f.write(str(current.data[0]) + '\n')
             current = current.next
     f.close()
+
 def deleteMissedQNo(mqn):
+    missedq_dict = {}
     if mqn in c1l:
         current = counter1.head
         while current is not None:
@@ -94,6 +96,9 @@ def deleteMissedQNo(mqn):
             current = current.next
         #print(counter1.printlist())
         llToFile(counter1,"Counter1.txt")
+        missedq_dict[mqn] = 'C1'
+        with open("MissedQNo.txt", "a") as f:
+            f.write(str(missedq_dict) + "\n")
     elif mqn in c2l:
         current = counter2.head
         while current is not None:
@@ -103,6 +108,9 @@ def deleteMissedQNo(mqn):
             current = current.next
         #print(counter2.printlist())
         llToFile(counter2, "Counter2.txt")
+        missedq_dict[mqn] = 'C2'
+        with open("MissedQNo.txt", "a") as f:
+            f.write(str(missedq_dict) + "\n")
     else:
         current = counter3.head
         while current is not None:
@@ -112,6 +120,9 @@ def deleteMissedQNo(mqn):
             current = current.next
         #print(counter3.printlist())
         llToFile(counter3,"Counter3.txt")
+        missedq_dict[mqn] = 'C3'
+        with open("MissedQNo.txt", "a") as f:
+            f.write(str(missedq_dict) + "\n")
 
 
 
