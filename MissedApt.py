@@ -1,6 +1,6 @@
 import csv
-from flask import Flask, jsonify, request
-
+from flask import Flask, Response, jsonify, request, make_response
+from flask_cors import CORS
 class Node:
     def __init__(self, data):
         self.data = data
@@ -66,16 +66,20 @@ c3l = counter3.printlist()
 
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 @app.route('/missedQueue', methods = ['POST'])
 def getMissedQ():
+    headers = {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods':'GET,POST,PATCH,OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
     missed_qno = str(request.json['queue_number'])
     print(missed_qno)
     if missed_qno in c1l or missed_qno in c2l or missed_qno in c3l:
         #enter the code to call the other function here
         deleteMissedQNo(missed_qno)
-        return jsonify({"status": "success", "message": "Queue number found"}), 200
+        return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
     else:
-        return jsonify({"status": "error", "message": "Queue number not found"}), 404
+        return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
 
 def llToFile(ll,file_name):
     current = ll.head
