@@ -72,6 +72,7 @@ counter3 = read_csv('Counters/Counter3.txt')
 c3l = counter3.printlist()
 #print(counter3.printlist())
 
+
 counter_missedq = read_csv('Counters/MissedQNo.txt')
 cmq = counter_missedq.printlist()
 print(counter_missedq.printlist())
@@ -91,6 +92,14 @@ def getMissedQ():
                 'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
     missed_qno = str(request.json['queue_number'])
     print(missed_qno)
+
+    counter1 = read_csv('Counters/Counter1.txt')
+    c1l = counter1.printlist()
+    counter2 = read_csv('Counters/Counter2.txt')
+    c2l = counter2.printlist()
+    counter3 = read_csv('Counters/Counter3.txt')
+    c3l = counter3.printlist()
+
     if missed_qno in c1l or missed_qno in c2l or missed_qno in c3l:
         #enter the code to call the other function here
         deleteMissedQNo(missed_qno)
@@ -153,9 +162,11 @@ def insertMissedQ():
                 'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
     missed_qno = str(request.json['queue_number'])
     print(missed_qno)
+    counter_missedq = read_csv('Counters/MissedQNo.txt')
+    cmq = counter_missedq.printlist()
     if missed_qno in cmq:
         # enter the code to call the other function here
-        RequeMissedQ(missed_qno)
+        RequeMissedQ(missed_qno,counter_missedq,cmq)
         return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
     else:
         return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
@@ -168,7 +179,7 @@ def llToFile(ll,file_name):
             current = current.next
     f.close()
 
-def RequeMissedQ(mqn):
+def RequeMissedQ(mqn, counter_missedq, cmq ):
     current = counter_missedq.head
     qno = email = counter_name = ""
 
