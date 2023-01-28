@@ -80,6 +80,72 @@ print(counter_missedq.printlist())
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
+###########################################################################################################
+
+#This section of code remove patients that missed their appointment from counter to missed queue txt file
+
+@app.route('/missedQueue', methods = ['POST'])
+def getMissedQ():
+    headers = {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods':'GET,POST,PATCH,OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
+    missed_qno = str(request.json['queue_number'])
+    print(missed_qno)
+    if missed_qno in c1l or missed_qno in c2l or missed_qno in c3l:
+        #enter the code to call the other function here
+        deleteMissedQNo(missed_qno)
+        return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
+    else:
+        return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
+
+def deleteMissedQNo(mqn):
+    missedq_info = []
+    if mqn in c1l:
+        current = counter1.head
+        while current is not None:
+            if current.data == mqn:
+                missedq_info = [current.data,current.data1,"C1"]
+                counter1.delete_node(mqn)
+                break
+            current = current.next
+        #print(counter1.printlist())
+        c1l.remove(mqn)
+        llToFile(counter1,"Counter1.txt")
+        with open("MissedQNo.txt", "a") as f:
+            f.write(missedq_info[0] + "," + missedq_info[1] + "," + missedq_info[2] + "\n")
+    elif mqn in c2l:
+        current = counter2.head
+        while current is not None:
+            if current.data == mqn:
+                missedq_info = [current.data, current.data1, "C2"]
+                counter2.delete_node(mqn)
+                break
+            current = current.next
+        #print(counter2.printlist())
+        c2l.remove(mqn)
+        llToFile(counter2, "Counter2.txt")
+        with open("MissedQNo.txt", "a") as f:
+            f.write(missedq_info[0] + "," + missedq_info[1] + "," + missedq_info[2] + "\n")
+    else:
+        current = counter3.head
+        while current is not None:
+            if current.data == mqn:
+                missedq_info = [current.data, current.data1, "C3"]
+                counter3.delete_node(mqn)
+                break
+            current = current.next
+        #print(counter3.printlist())
+        c3l.remove(mqn)
+        llToFile(counter3,"Counter3.txt")
+        with open("MissedQNo.txt", "a") as f:
+            f.write(missedq_info[0] + "," + missedq_info[1] + "," + missedq_info[2] + "\n")
+
+
+###########################################################################################################
+
+#This section of code inserts patients from missed queue txt file back to counter
+
+
 @app.route('/insertQueue', methods = ['POST'])
 def insertMissedQ():
     headers = {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*',
@@ -101,6 +167,7 @@ def llToFile(ll,file_name):
             f.write((str(current.data) + ',' + str(current.data1)) + '\n')
             current = current.next
     f.close()
+
 def RequeMissedQ(mqn):
     current = counter_missedq.head
     qno = email = counter_name = ""
@@ -148,9 +215,5 @@ def RequeMissedQ(mqn):
     f.close()
 
 
-
-
-
 if __name__ == '__main__':
     app.run(host = 'localhost',port = 9001,debug = False)
-    
