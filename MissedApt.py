@@ -55,16 +55,16 @@ def read_csv(file_name):
             linked_list.append(row)
     return linked_list
 
-counter1 = read_csv('Counter1.txt')
+counter1 = read_csv('Counters/Counter1.txt')
 c1l = counter1.printlist()
 #print(counter1.printlist())
 
 
-counter2 = read_csv('Counter2.txt')
+counter2 = read_csv('Counters/Counter2.txt')
 c2l = counter2.printlist()
 #print(counter2.printlist())
 
-counter3 = read_csv('Counter3.txt')
+counter3 = read_csv('Counters/Counter3.txt')
 c3l = counter3.printlist()
 #print(counter3.printlist())
 
@@ -105,8 +105,8 @@ def deleteMissedQNo(mqn):
             current = current.next
         #print(counter1.printlist())
         c1l.remove(mqn)
-        llToFile(counter1,"Counter1.txt")
-        with open("MissedQNo.txt", "a") as f:
+        llToFile(counter1, "Counters/Counter1.txt")
+        with open("Counters/MissedQNo.txt", "a") as f:
             f.write(missedq_info[0] + "," + missedq_info[1] + "," + missedq_info[2] + "\n")
     elif mqn in c2l:
         current = counter2.head
@@ -118,8 +118,8 @@ def deleteMissedQNo(mqn):
             current = current.next
         #print(counter2.printlist())
         c2l.remove(mqn)
-        llToFile(counter2, "Counter2.txt")
-        with open("MissedQNo.txt", "a") as f:
+        llToFile(counter2, "Counters/Counter2.txt")
+        with open("Counters/MissedQNo.txt", "a") as f:
             f.write(missedq_info[0] + "," + missedq_info[1] + "," + missedq_info[2] + "\n")
     else:
         current = counter3.head
@@ -131,8 +131,8 @@ def deleteMissedQNo(mqn):
             current = current.next
         #print(counter3.printlist())
         c3l.remove(mqn)
-        llToFile(counter3,"Counter3.txt")
-        with open("MissedQNo.txt", "a") as f:
+        llToFile(counter3, "Counters/Counter3.txt")
+        with open("Counters/MissedQNo.txt", "a") as f:
             f.write(missedq_info[0] + "," + missedq_info[1] + "," + missedq_info[2] + "\n")
 
 

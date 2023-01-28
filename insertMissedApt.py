@@ -59,20 +59,20 @@ def read_csv(file_name):
     return linked_list
 
 
-counter1 = read_csv('Counter1.txt')
+counter1 = read_csv('Counters/Counter1.txt')
 c1l = counter1.printlist()
 #print(counter1.printlist())
 
 
-counter2 = read_csv('Counter2.txt')
+counter2 = read_csv('Counters/Counter2.txt')
 c2l = counter2.printlist()
 #print(counter2.printlist())
 
-counter3 = read_csv('Counter3.txt')
+counter3 = read_csv('Counters/Counter3.txt')
 c3l = counter3.printlist()
 #print(counter3.printlist())
 
-counter_missedq = read_csv('MissedQNo.txt')
+counter_missedq = read_csv('Counters/MissedQNo.txt')
 cmq = counter_missedq.printlist()
 print(counter_missedq.printlist())
 
@@ -119,6 +119,7 @@ def RequeMissedQ(mqn):
         current = counter2.head
     else:
         current = counter3.head
+    current = current.next
 
     i = 1
     while i < 3:
@@ -132,16 +133,16 @@ def RequeMissedQ(mqn):
 
     cmq.remove(mqn)
     if counter_name == 'C1':
-        llToFile(counter1, "Counter1.txt")
+        llToFile(counter1, "Counters/Counter1.txt")
     elif counter_name == 'C2':
-        llToFile(counter2, "Counter2.txt")
+        llToFile(counter2, "Counters/Counter2.txt")
     else:
-        llToFile(counter3, "Counter3.txt")
+        llToFile(counter3, "Counters/Counter3.txt")
 
     #Writing from the updated missed queue linked list to the MissedQ txt file
 
     current = counter_missedq.head
-    with open('MissedQNo.txt', 'w') as f:
+    with open('Counters/MissedQNo.txt', 'w') as f:
         while current is not None:
             f.write((str(current.data) + ',' + str(current.data1)+ ',' + str(current.data2)) + '\n')
             current = current.next

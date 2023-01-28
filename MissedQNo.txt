@@ -1,3 +1,0 @@
-2,swastik002@gmail.com,C1
-11,swastik011@gmail.com,C2
-18,swastik018@gmail.com,C3
