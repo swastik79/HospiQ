@@ -122,7 +122,7 @@ def RequeMissedQ(mqn):
     current = current.next
 
     i = 1
-    while i < 3:
+    while i < 2:
         if current.next is None:
             break
         current = current.next
