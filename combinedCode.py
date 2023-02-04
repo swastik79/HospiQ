@@ -65,16 +65,24 @@ def insertMissedQ():
     else:
         return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
 
-'''      
-    for i in Support.missed_queue_code:
-        #print(Support.missed_queue_code[i])
-        #print(i)
-        if Support.missed_queue_code[i] == missed_qno[0]:
-            Support.RequeMissedQ(missed_qno,i)
-            return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
 
-    return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
-'''
+
+@app.route('/nextPatient', methods = ['POST'])
+def call_patient():
+    headers = {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods':'GET,POST,PATCH,OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
+
+    branch = str(request.json['branch_name'])
+    patient_type = str(request.json['patient_type'])
+    path = f'{branch}/{patient_type}.txt'
+    counter = Support.read_csv(path)
+    queue_no = counter.dequeue()
+    Support.llToFile(counter, path)
+    if queue_no is not None:
+        return make_response(jsonify({"status": "success", "message": f"{queue_no} appointment is finished!"}), 200, headers)
+    else:
+        return make_response(jsonify({"status": "error", "message": "No more patients in this counter!"}), 404, headers)
 
 
 

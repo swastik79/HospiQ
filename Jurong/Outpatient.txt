@@ -1,3 +1,2 @@
-jo1,mish@gmail.com
-jo2,mish1@gmail.com
-jo3,mish65@gmail.com
+jo2,mish65@gmail.com
+jo1,mish65@gmail.com

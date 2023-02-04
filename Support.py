@@ -51,6 +51,15 @@ class LinkedList:
             current = current.next
         return l
 
+    def dequeue(self):
+        if self.head is None:
+            return None
+        else:
+            temp = self.head
+            val_returned = self.head.data
+            self.head = self.head.next
+            temp = None
+            return val_returned
 def read_csv(file_name):
     linked_list = LinkedList()
     with open(file_name, newline='', encoding='utf-8') as csv_file:
