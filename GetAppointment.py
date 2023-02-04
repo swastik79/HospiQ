@@ -15,12 +15,13 @@ def getQNo():
     email = str(request.json['email_id'])
     branch = str(request.json['branch_name'])
     patient_type = str(request.json['patient_type'])
+
     path = f'{branch}/{patient_type}.txt'
     queue_no = generateQNo(path)
     with open(path, 'a') as f:
             f.write((str(queue_no) + ',' + str(email)) + '\n')
     f.close()
-    return make_response(jsonify({"status": "success", "message": "Queue number generated"}), 200, headers)
+    return make_response(jsonify({"status": "success", "message": f"Your Queue number is {queue_no}"}), 200, headers)
 
 
 def generateQNo(path): #
