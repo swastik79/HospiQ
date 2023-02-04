@@ -1,0 +1,6 @@
+missedApt.py
+
+curl -X POST -H "Content-Type: application/json" -d '{"queue_number":12}' http://localhost:9001/missedQueue
+
+
+curl -X POST -H "Content-Type: application/json" -d '{"email_id" : "mish@gmail.com", "branch_name" : "Yishun", "patient_type" : "Outpatient" }' http://localhost:8001/getAppointmnet
