@@ -2,7 +2,8 @@ import csv
 
 #Hashmap that save the code for each counter in each branch
 queue_code = {'Jurong/Outpatient.txt' : 'jo', 'Jurong/Priority.txt' : 'jp', 'Jurong/Laboratory.txt' : 'jl', 'Changi/Outpatient.txt' : 'co', 'Changi/Priority.txt' : 'cp', 'Changi/Laboratory.txt' : 'cl', 'Yishun/Outpatient.txt' : 'yo', 'Yishun/Priority.txt' : 'yp', 'Yishun/Laboratory.txt' : 'yl'}
-
+missed_queue_code = {'Jurong/MissedQNo.txt' : 'j', 'Changi/MissedQNo.txt' : 'c', 'Yishun/MissedQNo.txt' : 'y'}
+missed_queue_code1 = { 'j' : 'Jurong/MissedQNo.txt' , 'c' : 'Changi/MissedQNo.txt' , 'y' : 'Yishun/MissedQNo.txt' }
 
 class Node:
     def __init__(self, data, data1):
@@ -104,3 +105,46 @@ def deleteMissedQNo(mqn,path):
     with open(missedq_path, "a") as f:
         f.write(missedq_info[0] + "," + missedq_info[1] + "\n")
 
+
+
+def RequeMissedQ(mqn,missedq_path):
+    qno = email = ""
+    counter_missedq = read_csv(missedq_path)
+    current = counter_missedq.head
+    while current is not None:
+        if current.data == mqn:
+            qno = current.data
+            email = current.data1
+            counter_missedq.delete_node(mqn)  # deleting from missedq linkedlist
+            break
+        current = current.next
+    #llToFile(counter_missedq,missedq_path) #writing ll to missedq.txt file after deleting the missedqno
+    counter_path = ""
+    for i in queue_code:
+        if queue_code[i] == mqn[:2]:
+            counter_path = i
+            break
+    print(counter_path)
+    counter = read_csv(counter_path)
+    current = counter.head
+    if current is None:
+        counter.append([qno,email])
+    else:
+        i = 1
+        while i < 2:
+            if current.next is None:
+                break
+            current = current.next
+            i += 1
+        new_node = Node(qno, email)
+        new_node.next = current.next
+        current.next = new_node
+
+    llToFile(counter,counter_path)
+
+    current = counter_missedq.head
+    with open(missedq_path, 'w') as f:
+        while current is not None:
+            f.write((str(current.data) + ',' + str(current.data1) + ',' +'\n'))
+            current = current.next
+    f.close()

@@ -3,10 +3,6 @@ from flask import Flask, Response, jsonify, request, make_response
 from flask_cors import CORS
 import Support
 
-#Initializing counters
-
-
-
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
@@ -37,12 +33,49 @@ def getMissedQ():
     print(missed_qno)
     
     for i in Support.queue_code:
-        print(Support.queue_code[i])
+        #print(Support.queue_code[i])
         if Support.queue_code[i] == missed_qno[:2]:
             Support.deleteMissedQNo(missed_qno,i)
             return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
 
     return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
+
+
+
+@app.route('/insertQueue', methods = ['POST'])
+def insertMissedQ():
+    headers = {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods':'GET,POST,PATCH,OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
+    missed_qno = str(request.json['queue_number'])
+    print(missed_qno)
+
+    path = Support.missed_queue_code1[missed_qno[0]]
+    missed_counter = Support.read_csv(path)
+    flag = False
+    current = missed_counter.head
+    while current:
+        if current.data == missed_qno:
+            flag = True
+        current = current.next
+
+    if flag == True:
+        Support.RequeMissedQ(missed_qno, path)
+        return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
+    else:
+        return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
+
+'''      
+    for i in Support.missed_queue_code:
+        #print(Support.missed_queue_code[i])
+        #print(i)
+        if Support.missed_queue_code[i] == missed_qno[0]:
+            Support.RequeMissedQ(missed_qno,i)
+            return make_response(jsonify({"status": "success", "message": "Queue number found"}), 200, headers)
+
+    return make_response(jsonify({"status": "error", "message": "Queue number not found"}), 404, headers)
+'''
+
 
 
 if __name__ == '__main__':
