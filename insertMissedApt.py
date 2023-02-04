@@ -112,6 +112,7 @@ def RequeMissedQ(mqn):
             counter_name = current.data2
             counter_missedq.delete_node(mqn) #deleting from missedq linkedlist
             break
+        current = current.next
 
     if counter_name == 'C1':
         current = counter1.head
@@ -119,7 +120,7 @@ def RequeMissedQ(mqn):
         current = counter2.head
     else:
         current = counter3.head
-    current = current.next
+
 
     i = 1
     while i < 2:
