@@ -1,5 +1,0 @@
-co1,mish65@gmail.com
-co2,mish65@gmail.com
-co3,mish65@gmail.com
-co4,mish65@gmail.com
-co5,mish65@gmail.com
