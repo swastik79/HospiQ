@@ -20,7 +20,7 @@ def getQNo():
     with open(path, 'a') as f:
             f.write((str(queue_no) + ',' + str(email)) + '\n')
     f.close()
-    return make_response(jsonify({"status": "success", "message": f"Your Queue number is {queue_no}"}), 200, headers)
+    return make_response(jsonify({"status": "success", "queue_no": queue_no}), 200, headers)
 
 
 #Remove a patient from Counter to MissedQueue file
