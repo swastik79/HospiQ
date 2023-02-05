@@ -1,8 +1,14 @@
 import csv
+import os
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
+_ = load_dotenv()
+
 
 #Hashmap that save the code for each counter in each branch
 queue_code = {'Jurong/Outpatient.txt' : 'jo', 'Jurong/Priority.txt' : 'jp', 'Jurong/Laboratory.txt' : 'jl', 'Changi/Outpatient.txt' : 'co', 'Changi/Priority.txt' : 'cp', 'Changi/Laboratory.txt' : 'cl', 'Yishun/Outpatient.txt' : 'yo', 'Yishun/Priority.txt' : 'yp', 'Yishun/Laboratory.txt' : 'yl'}
-missed_queue_code = {'Jurong/MissedQNo.txt' : 'j', 'Changi/MissedQNo.txt' : 'c', 'Yishun/MissedQNo.txt' : 'y'}
+#missed_queue_code = {'Jurong/MissedQNo.txt' : 'j', 'Changi/MissedQNo.txt' : 'c', 'Yishun/MissedQNo.txt' : 'y'}
 missed_queue_code1 = { 'j' : 'Jurong/MissedQNo.txt' , 'c' : 'Changi/MissedQNo.txt' , 'y' : 'Yishun/MissedQNo.txt' }
 
 class Node:
@@ -157,3 +163,32 @@ def RequeMissedQ(mqn,missedq_path):
             f.write((str(current.data) + ',' + str(current.data1) + ',' +'\n'))
             current = current.next
     f.close()
+
+
+def send_email(to, subject, message):
+    try:
+        email_address = os.environ.get("EMAIL_ADDRESS")
+        email_password = os.environ.get("EMAIL_PASSWORD")
+
+        if email_address is None or email_password is None:
+            # no email address or password
+            # something is not configured properly
+            print("You are now the 3rd person in line! Your turn is coming soon.")
+            return False
+
+        # create email
+        msg = EmailMessage()
+        msg['Subject'] = subject
+        msg['From'] = email_address
+        msg['To'] = to
+        msg.set_content(message)
+
+        # send email
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(email_address, email_password)
+            smtp.send_message(msg)
+        return True
+    except Exception as e:
+        print("Problem during send email")
+        print(str(e))
+    return False

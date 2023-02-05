@@ -80,7 +80,7 @@ def call_patient():
     queue_no = counter.dequeue()
     Support.llToFile(counter, path)
     if queue_no is not None:
-        return make_response(jsonify({"status": "success", "message": f"{queue_no} appointment is finished!"}), 200, headers)
+        return make_response(jsonify({"status": "success", "message": f"{queue_no} report to {patient_type} counter!"}), 200, headers)
     else:
         return make_response(jsonify({"status": "error", "message": "No more patients in this counter!"}), 404, headers)
 
