@@ -173,7 +173,7 @@ def send_email(to, subject, message):
         if email_address is None or email_password is None:
             # no email address or password
             # something is not configured properly
-            print("You are now the 3rd person in line! Your turn is coming soon.")
+            print("Did you set email address and password correctly?")
             return False
 
         # create email
