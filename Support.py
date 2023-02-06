@@ -79,20 +79,25 @@ def generateQNo(path):
     data = []
     with open(path,"r") as file:
         for line in file:
+            print(line)
             data.append(line[:-1])
 
-    #print(data)
-
-    for line in data:
-        #print(line)
-        value = line.split(',')
-        #print(value)
-        value = int(value[0][2:])
-        ql.append(value)
-    if len(ql) != 0:
-        new_queue_no = queue_code[path] + str(max(ql) + 1)
-    else:
+    print("The value of data is",data)
+    new_queue_no = ""
+    if data == ['']:
         new_queue_no = queue_code[path] + "1"
+    else:
+        for line in data:
+            #print(line)
+            value = line.split(',')
+            print("The value is",value)
+            value = int(value[0][2:])
+            ql.append(value)
+        if len(ql) != 0:
+            new_queue_no = queue_code[path] + str(max(ql) + 1)
+        else:
+            new_queue_no = queue_code[path] + "1"
+    print(new_queue_no)
     return new_queue_no
 
 def llToFile(ll,file_name):
