@@ -85,20 +85,10 @@ def call_patient():
         return make_response(jsonify({"status": "error", "queue_no": ""}), 404, headers)
 
 
-@app.route('/Qdisplay')
-def branch():
-    return render_template('getbranch.html')
-
-
 @app.route('/Qdisplay/<name>')
 def display(name):
     return Support.displayMyQ(name)
 
-@app.route('/CROQdisplay/', methods = ['POST'])
-def call_patient():
-    headers = {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods':'GET,POST,PATCH,OPTIONS',
-                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
 
 
 if __name__ == '__main__':
