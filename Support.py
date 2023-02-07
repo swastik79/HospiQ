@@ -5,6 +5,7 @@ from email.message import EmailMessage
 from dotenv import load_dotenv
 _ = load_dotenv()
 
+from flask import render_template
 
 #Hashmap that save the code for each counter in each branch
 queue_code = {'Jurong/Outpatient.txt' : 'jo', 'Jurong/Priority.txt' : 'jp', 'Jurong/Laboratory.txt' : 'jl', 'Changi/Outpatient.txt' : 'co', 'Changi/Priority.txt' : 'cp', 'Changi/Laboratory.txt' : 'cl', 'Yishun/Outpatient.txt' : 'yo', 'Yishun/Priority.txt' : 'yp', 'Yishun/Laboratory.txt' : 'yl'}
@@ -151,7 +152,7 @@ def RequeMissedQ(mqn,missedq_path):
         counter.append([qno,email])
     else:
         i = 1
-        while i < 2:
+        while i < 3:
             if current.next is None:
                 break
             current = current.next
@@ -197,3 +198,62 @@ def send_email(to, subject, message):
         print("Problem during send email")
         print(str(e))
     return False
+
+
+
+def displayMyQ(branch):
+    counter1 = read_csv(f'{branch}/Outpatient.txt')
+    c1l = counter1.printlist()
+    if c1l != []:
+        displayc1 = c1l[0] #Shows now serving
+    else:
+        displayc1 = None
+
+    counter2 = read_csv(f'{branch}/Priority.txt')
+    c2l = counter2.printlist()
+    if c2l != []:
+        displayc2 = c2l[0] #Shows now serving
+    else:
+        displayc2 = None
+
+    counter3 = read_csv(f'{branch}/Laboratory.txt')
+    c3l = counter3.printlist()
+    if c3l != []:
+        displayc3 = c3l[0] #Shows now serving
+    else:
+        displayc3 = None
+
+    counter_missedq = read_csv(f'{branch}/MissedQNo.txt')
+    missedq = counter_missedq.printlist()
+
+    counter1m = []
+    counter2m= []
+    counter3m = []
+    for i in missedq:
+        if i[1] == 'o':
+            counter1m.append(i)
+        elif i[1] == 'p':
+            counter2m.append(i)
+        else:
+            counter3m.append(i)
+    print(counter1m)
+    print(counter2m)
+    print(counter3m)
+    counter1missed = ','.join(counter1m)
+    counter2missed = ','.join(counter2m)
+    counter3missed = ','.join(counter3m)
+
+    queueinline1 = ','.join(c1l[1:])
+    queueinline2 = ','.join(c2l[1:])
+    queueinline3 = ','.join(c3l[1:])
+
+    counter1total = (len(c1l) - 1)
+    counter2total = (len(c2l) - 1)
+    counter3total = (len(c3l) - 1)
+
+    return render_template('customer_display.html', name= branch, displayc1=displayc1, counter1missed=counter1missed,
+                           displayc2=displayc2, counter2missed=counter2missed,
+                           displayc3=displayc3, counter3missed=counter3missed,
+                           queueinline1=queueinline1, queueinline2=queueinline2, queueinline3=queueinline3,
+                           counter1total=counter1total,
+                           counter2total=counter2total, counter3total=counter3total)
