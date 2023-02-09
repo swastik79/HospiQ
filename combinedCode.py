@@ -3,6 +3,9 @@ from flask import Flask, Response, jsonify, request, make_response, render_templ
 from flask_cors import CORS
 import Support
 
+start_stop_dict = {'Jurong-Outpatient' : 'start', 'Jurong-Priority' : 'start', 'Jurong-Laboratory' : 'start',
+                   'Changi-Outpatient' : 'start', 'Changi-Priority' : 'start', 'Changi-Laboratory' : 'start',
+                   'Yishun-Outpatient' : 'start', 'Yishun-Priority' : 'start', 'Yishun-Laboratory' : 'start'}
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
@@ -15,12 +18,15 @@ def getQNo():
     branch = str(request.json['branch_name'])
     patient_type = str(request.json['patient_type'])
 
-    path = f'{branch}/{patient_type}.txt'
-    queue_no = Support.generateQNo(path)
-    with open(path, 'a') as f:
-            f.write((str(queue_no) + ',' + str(email)) + '\n')
-    f.close()
-    return make_response(jsonify({"status": "success", "queue_no": queue_no}), 200, headers)
+    if start_stop_dict[branch + "-" + patient_type] == 'start':
+        path = f'{branch}/{patient_type}.txt'
+        queue_no = Support.generateQNo(path)
+        with open(path, 'a') as f:
+                f.write((str(queue_no) + ',' + str(email)) + '\n')
+        f.close()
+        return make_response(jsonify({"status": "success", "queue_no": queue_no}), 200, headers)
+    else:
+        return make_response(jsonify({"status": "error", "message": "Queue registration has been stopped for now!"}), 404, headers)
 
 
 #Remove a patient from Counter to MissedQueue file
@@ -89,6 +95,31 @@ def call_patient():
 def display(name):
     return Support.displayMyQ(name)
 
+
+@app.route('/QStop', methods = ['POST'])
+def StopQ():
+    headers = {'Content-Type': 'application/json','Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods':'GET,POST,PATCH,OPTIONS',
+                'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
+    branch = str(request.json['branch_name'])
+    patient_type = str(request.json['patient_type'])
+
+    key = branch + "-" + patient_type
+    start_stop_dict[key] = 'stop'
+    return make_response(jsonify({"status": "success", "message": "Queue has been stopped!"}), 200, headers)
+
+
+@app.route('/QStart', methods=['POST'])
+def StartQ():
+    headers = {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*',
+               'Access-Control-Allow-Methods': 'GET,POST,PATCH,OPTIONS',
+               'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'}
+    branch = str(request.json['branch_name'])
+    patient_type = str(request.json['patient_type'])
+
+    key = branch + "-" + patient_type
+    start_stop_dict[key] = 'start'
+    return make_response(jsonify({"status": "success", "message": "Queue has been started again!"}), 200, headers)
 
 
 if __name__ == '__main__':
