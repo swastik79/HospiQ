@@ -1,0 +1,154 @@
+<!DOCTYPE html> 
+<html>  
+<head>
+<title>{{name}}:COUNTER SERVING</title>
+
+
+</head>
+
+<div style="width: 100%; margin: auto; text-align: center;">
+   <body>
+       <h2> COUNTERS in {{name}} ARE CURRENTLY SERVING </h2>
+       <form action = "/Q" method = "POST'> 
+       
+       <div id="app">
+	    <p style="color:#0000FF;font-size:22px" id="p1"> Counter #1: </p>	
+	    <style>
+                table{width: 20%}, th, td {border: 0.5px solid black; width:25%}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Currently Serving</th>
+            </tr>
+            <tr>
+                <td>{{displayc1}}</td>
+            </tr>
+            </table>
+	   
+	   <p> </p>	
+	    <style>
+                  table, th, td {border: 0.5px solid black;}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Missed Queue Numbers</th>
+            </tr>
+            <tr>
+                <td>{{counter1missed}}</td>
+            </tr>
+            </table>
+
+
+	   <p> </p>	
+	    <style>
+                  table, th, td {border: 0.5px solid black;}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Waiting in Queue</th>
+		<th>Total in Line </th>
+            </tr>
+            <tr>
+                <td>{{queueinline1}}</td>
+		<td>{{counter1total}}</td>
+            </tr>
+            </table>
+
+        </div>
+
+
+<div style="width: 100%; margin: auto; text-align: center;">
+       <div id="app">
+	    <p style="color:#0000FF;font-size:22px" id="p2"> Counter #2: </p>	
+	    <style>
+                 table{width: 20%}, th, td {border: 0.5px solid black; width:25%}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Currently Serving</th>
+            </tr>
+            <tr>
+                <td>{{displayc2}}</td>
+            </tr>
+            </table>
+	   
+	   <p> </p>	
+	    <style>
+                 table, th, td {border: 0.5px solid black;}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Missed Queue Numbers</th>
+            </tr>
+            <tr>
+                <td>{{counter2missed}}</td>
+		
+            </tr>
+            </table>
+
+	   <p> </p>	
+	    <style>
+                  table, th, td {border: 0.5px solid black;}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Waiting in Queue</th>
+		<th>Total in Line </th>
+            </tr>
+            <tr>
+                <td>{{queueinline2}}</td>
+		<td>{{counter2total}}</td>
+            </tr>
+            </table>
+
+        </div>
+
+
+<div style="width:100%; margin: auto; text-align: center;">
+       <div id="app">
+	    <p style="color:#0000FF;font-size:22px" id="p3"> Counter #3: </p>	
+	    <style>
+		 table{width: 20%}, th, td {border: 0.5px solid black; width:25%}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Currently Serving</th>
+            </tr>
+            <tr>
+                <td>{{displayc3}}</td>
+            </tr>
+            </table>
+	   
+	   <p> </p>	
+	    <style>
+                  table, th, td {border: 0.5px solid black;}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Missed Queue Numbers</th>
+            </tr>
+            <tr>
+                <td>{{counter3missed}}</td>
+            </tr>
+            </table>
+
+	   <p> </p>	
+	    <style>
+                  table, th, td {border: 0.5px solid black;}
+            </style>
+            <table style="width: 20%; margin: auto;">
+            <tr>
+                <th>Waiting in Queue</th>
+		<th>Total in Line </th>
+            </tr>
+            <tr>
+                <td>{{queueinline3}}</td>
+		<td>{{counter3total}}</td>
+            </tr>
+            </table>
+
+        </div>
+    
+        
+    </body>
+</html>

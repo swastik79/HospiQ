@@ -1,0 +1,21 @@
+<!DOCTYPE html> 
+<html>  
+<head>
+<title>COUNTER SERVING</title>
+<style> body {background-image: url('display.jpg')}</style>
+</head>
+
+<div id="rightdiv">
+   <body>
+       <h2> THE COUNTERS ARE CURRENTLY SERVING </h2>
+       <form action = "/Q" method = "POST'> 
+       
+       <div id="app">
+	    <p style="color:#21130d;" id="p1"> Counter #1 is NOW SERVING: </p>	
+            <p style="color:#1e81b0;font-size:18px" id="p2"> {{displayc1}}</p>
+            <p style= "color:#21130d;"> Missed Queues from Counter #1 are:</p>
+            <p style="color:#1e81b0;font-size:15px" id="p3">{{counter1missed}}</p>
+    
+	</div>
+</body>
+</html>

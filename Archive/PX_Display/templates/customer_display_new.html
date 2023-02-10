@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+          body {
+            background-image: url("/Users/swastikmishra/Desktop/Advanced Programming/Group Project/hospiq-ui/hosipiq-ui/build/hospital.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+        </style>
+      </head>
+
+<head>
+    <title>{{name}}: COUNTER SERVING</title>
+    <style>
+        .counter-table {
+            width: 20%;
+            margin: auto;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        .counter-table th,
+        .counter-table td {
+            border: 0.5px solid black;
+        }
+
+        .counter-header {
+            color: #0000FF;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 style="text-align: center;">COUNTERS in {{name}} ARE CURRENTLY SERVING</h2>
+    <form action="/Q" method="POST">
+        <div id="app">
+            <div class="counter">
+                <p class="counter-header" id="p1">Counter #1:</p>
+                <table class="counter-table">
+                    <tr>
+                        <th>Currently Serving</th>
+                    </tr>
+                    <tr>
+                        <td>{{displayc1}}</td>
+                    </tr>
+                </table>
+
+                <table class="counter-table">
+                    <tr>
+                        <th>Missed Queue Numbers</th>
+                    </tr>
+                    <tr>
+                        <td>{{counter1missed}}</td>
+                    </tr>
+                </table>
+
+                <table class="counter-table">
+                    <tr>
+                        <th>Numbers in Queue</th>
+                        <th>Total in Line</th>
+                    </tr>
+                    <tr>
+                        <td>{{queueinline1}}</td>
+                        <td>{{counter1total}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="counter">
+                <p class="counter-header" id="p2">Counter #2:</p>
+                <table class="counter-table">
+                    <tr>
+                        <th>Currently Serving</th>
+                    </tr>
+                    <tr>
+                        <td>{{displayc2}}</td>
+                    </tr>
+                </table>
+
+                <table class="counter-table">
+                    <tr>
+                        <th>Missed Queue Numbers</th>
+                    </tr>
+                    <tr>
+                        <td>{{counter2missed}}</td>
+                    </tr>
+                </table>
+
+                <table class="counter-table">
+                    <tr>
+                        <th>Numbers in Queue</th>
+                        <th>Total in Line</th>
+                    </tr>
+                    <tr>
+                        <td>{{queueinline2}}</td>
+                        <td>{{counter2total}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="counter">
+                <p class="counter-header" id="p3">Counter #3:</p>
+                <table class="counter-table">
+                    <tr>
+                        <th>Currently Serving</th>
+                    </tr>
+                    <tr>
+                        <td>{{displayc3}}</td>
+                    </tr>
+                </table>
+
+                <table class="counter-table">
+                    <tr>
+                        <th>Missed Queue Numbers</th>
+                    </tr>
+                    <tr>
+                        <td>{{counter3missed}}</td>
+                    </tr>
+                </table>
+
+                <table class="counter-table">
+                    <tr>
+                        <th>Numbers in Queue</th>
+                        <th>Total in Line</th>
+                    </tr>
+                    <tr>
+                        <td>{{queueinline3}}</td>
+                        <td>{{counter3total}}</td>
+                    </tr>
+                </table>
+            </div>
+</body>
+
+</html>
