@@ -1,9 +1,9 @@
 import csv
 import os
 import smtplib
+import ssl
 from email.message import EmailMessage
-from dotenv import load_dotenv
-_ = load_dotenv()
+
 
 from flask import render_template
 
@@ -126,6 +126,17 @@ def deleteMissedQNo(mqn,path):
     with open(missedq_path, "a") as f:
         f.write(missedq_info[0] + "," + missedq_info[1] + "\n")
 
+    current = counter.head
+    i = 0
+    while current is not None:
+        i += 1
+        current = current.next
+
+    if i >= 4:
+        current = counter.head
+        email = current.next.next.next.data1
+        queue_no1 = current.next.next.next.data
+        send_email(email, queue_no1)  # sending notification to 3rd Patient in line
 
 
 def RequeMissedQ(mqn,missedq_path):
@@ -152,7 +163,7 @@ def RequeMissedQ(mqn,missedq_path):
         counter.append([qno,email])
     else:
         i = 1
-        while i < 3:
+        while i < 4:
             if current.next is None:
                 break
             current = current.next
@@ -171,33 +182,25 @@ def RequeMissedQ(mqn,missedq_path):
     f.close()
 
 
-def send_email(to, subject, message):
-    try:
-        email_address = os.environ.get("EMAIL_ADDRESS")
-        email_password = os.environ.get("EMAIL_PASSWORD")
+def send_email(email,queue_no):
+    email_sender = "hospiq079@gmail.com"
+    email_password = "iqpqsqjqygrbxryl"
 
-        if email_address is None or email_password is None:
-            # no email address or password
-            # something is not configured properly
-            print("Did you set email address and password correctly?")
-            return False
+    email_receiver = email
+    subject = 'Your Queue Status'
+    body = f'{queue_no} is now the 3rd patient in the queue!'
 
-        # create email
-        msg = EmailMessage()
-        msg['Subject'] = subject
-        msg['From'] = email_address
-        msg['To'] = to
-        msg.set_content(message)
+    em = EmailMessage()
+    em['From'] = email_sender
+    em['To'] = email_receiver
+    em['subject'] = subject
+    em.set_content(body)
 
-        # send email
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login(email_address, email_password)
-            smtp.send_message(msg)
-        return True
-    except Exception as e:
-        print("Problem during send email")
-        print(str(e))
-    return False
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context = context) as smtp:
+        smtp.login(email_sender, email_password)
+        smtp.sendmail(email_sender, email_receiver, em.as_string())
 
 
 
@@ -247,9 +250,19 @@ def displayMyQ(branch):
     queueinline2 = ','.join(c2l[1:])
     queueinline3 = ','.join(c3l[1:])
 
-    counter1total = (len(c1l) - 1)
-    counter2total = (len(c2l) - 1)
-    counter3total = (len(c3l) - 1)
+    if len(c1l) != 0:
+        counter1total = (len(c1l) - 1)
+    else:
+        counter1total = 0
+    if len(c2l) != 0:
+        counter2total = (len(c2l) - 1)
+    else:
+        counter2total = 0
+    if len(c3l) != 0:
+        counter3total = (len(c3l) - 1)
+    else:
+        counter3total = 0
+
 
     return render_template('customer_display.html', name= branch, displayc1=displayc1, counter1missed=counter1missed,
                            displayc2=displayc2, counter2missed=counter2missed,
@@ -257,3 +270,4 @@ def displayMyQ(branch):
                            queueinline1=queueinline1, queueinline2=queueinline2, queueinline3=queueinline3,
                            counter1total=counter1total,
                            counter2total=counter2total, counter3total=counter3total)
+

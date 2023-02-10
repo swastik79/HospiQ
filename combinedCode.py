@@ -24,6 +24,20 @@ def getQNo():
         with open(path, 'a') as f:
                 f.write((str(queue_no) + ',' + str(email)) + '\n')
         f.close()
+
+        counter = Support.read_csv(path)
+        current = counter.head
+        i = 0
+        while current is not None:
+            i += 1
+            current = current.next
+
+        if i == 4:
+            current = counter.head
+            email = current.next.next.next.data1
+            queue_no1 = current.next.next.next.data
+            Support.send_email(email, queue_no1)  # sending notification to 3rd Patient in line
+
         return make_response(jsonify({"status": "success", "queue_no": queue_no}), 200, headers)
     else:
         return make_response(jsonify({"status": "error", "message": "Queue registration has been stopped for now!"}), 404, headers)
@@ -85,6 +99,19 @@ def call_patient():
     counter = Support.read_csv(path)
     queue_no = counter.dequeue()
     Support.llToFile(counter, path)
+
+    current = counter.head
+    i = 0
+    while current is not None:
+        i += 1
+        current = current.next
+
+    if i >= 4:
+        current  = counter.head
+        email = current.next.next.next.data1
+        queue_no1 = current.next.next.next.data
+        Support.send_email(email, queue_no1)  # sending notification to 3rd Patient in line
+
     if queue_no is not None:
         return make_response(jsonify({"status": "success", "queue_no": queue_no}), 200, headers)
     else:
